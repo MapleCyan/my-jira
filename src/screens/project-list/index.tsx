@@ -6,6 +6,14 @@ import { cleanObject, useDebounce, useMount } from "utils";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  title: string;
+  organization: string;
+}
+
 export const ProjectListScreen = () => {
   const [param, setParam] = useState({
     name: "",
@@ -13,7 +21,7 @@ export const ProjectListScreen = () => {
   });
   const [list, setList] = useState([]);
   const [users, setUsers] = useState([]);
-  const debouncedParam = useDebounce(param, 1000);
+  const debouncedParam = useDebounce(param, 200);
 
   useEffect(() => {
     fetch(
