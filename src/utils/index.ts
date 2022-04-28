@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
-export const isFalsy = (value: any) => (value === 0 ? false : !value);
+//unknown不能赋给任何值，也不能使用任何方法
+export const isFalsy = (value: unknown): boolean =>
+  value === 0 ? false : !value;
 
 export const cleanObject = (object: Record<any, string>) => {
   const result = { ...object };
