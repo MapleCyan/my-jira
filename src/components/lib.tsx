@@ -19,4 +19,5 @@ export const Row = styled.div<{
   }
   justify-content: ${(props) => (props.between ? "space-between" : undefined)};
   margin-bottom: ${(props) => props.marginBottom + "rem"};
+  user-select: none;
 `;
