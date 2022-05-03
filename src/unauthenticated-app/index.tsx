@@ -65,7 +65,8 @@ const ShadowCard = styled(Card)`
   text-align: center;
 `;
 
-const Title = styled.h2`
+const Title = styled.h3`
   margin-bottom: 2.4rem;
   color: rgb(94, 108, 132);
+  user-select: none;
 `;
