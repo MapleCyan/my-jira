@@ -2,17 +2,18 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { loadDevTools } from "jira-dev-tool";
+import { loadServer, DevTools } from "jira-dev-tool";
 //务必在jiradevtool后面引入
 import "antd/dist/antd.less";
 import { AppProviders } from "context";
 
-loadDevTools(() => {
+loadServer(() => {
   const container = document.getElementById("root");
   const root = createRoot(container!);
   root.render(
     <React.StrictMode>
       <AppProviders>
+        <DevTools />
         <App />
       </AppProviders>
     </React.StrictMode>
