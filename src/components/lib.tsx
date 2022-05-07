@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Spin, Typography } from "antd";
 import { DevTools } from "jira-dev-tool";
+import { useEffect } from "react";
 
 export const Row = styled.div<{
   gap?: number | boolean;
@@ -43,3 +44,22 @@ export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
     <DevTools />
   </FullPage>
 );
+
+export const useDocumentTitle = (
+  title: string,
+  keepOnUnmount: boolean = true
+) => {
+  const oldTitle = document.title;
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => {
+    return () => {
+      if (keepOnUnmount === false) {
+        document.title = oldTitle;
+      }
+    };
+  }, []);
+};
