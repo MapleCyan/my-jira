@@ -40,12 +40,12 @@ export const Test = () => {
 
   const add = () => setNum(num + 1);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log("num in setInterval: ", num);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [num]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log("num in setInterval: ", num);
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, [num]);
 
   useEffect(() => {
     return () => {
