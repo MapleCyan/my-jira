@@ -6,7 +6,8 @@ import styled from "@emotion/styled";
 import { useProjects } from "utils/projects";
 import { useUsers } from "utils/users";
 import { Typography } from "antd";
-import { useDocumentTitle } from "components/lib";
+import { useDocumentTitle } from "utils/index";
+import { Test } from "./test";
 
 export interface User {
   id: string;
@@ -30,6 +31,7 @@ export const ProjectListScreen = () => {
 
   return (
     <Container>
+      <Test />
       <h1>项目列表</h1>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (

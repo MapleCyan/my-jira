@@ -6,12 +6,12 @@ import styled from "@emotion/styled";
 import logo from "assets/logo.svg";
 import left from "assets/left.svg";
 import right from "assets/right.svg";
-import { useDocumentTitle } from "components/lib";
+// import { useDocumentTitle } from "utils/index";
 
 export const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  useDocumentTitle("登录-Jira");
+  // useDocumentTitle("登录-Jira");
 
   return (
     <Container style={{ display: "flex", justifyContent: "center" }}>
