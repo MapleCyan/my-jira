@@ -22,8 +22,6 @@ export const LoginScreen = ({
     }
   };
 
-  let id: any;
-
   return (
     <Form onFinish={handleSubmit}>
       <Form.Item

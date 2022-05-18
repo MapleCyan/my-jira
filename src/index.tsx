@@ -1,3 +1,4 @@
+import "./why-did-you-render";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
