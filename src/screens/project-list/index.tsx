@@ -1,6 +1,5 @@
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
-import { useState } from "react";
 import { useDebounce } from "utils";
 import styled from "@emotion/styled";
 import { useProjects } from "utils/projects";
