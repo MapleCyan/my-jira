@@ -7,9 +7,10 @@ import { useUsers } from "utils/users";
 import { Typography } from "antd";
 import { useDocumentTitle } from "utils/index";
 import { useUrlQueryParam } from "utils/url";
+import { useProjectSearchParams } from "./util";
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   title: string;
@@ -18,12 +19,12 @@ export interface User {
 }
 
 export const ProjectListScreen = () => {
-  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
-  const debouncedParam = useDebounce(param, 200);
-  const { isLoading, error, data: list } = useProjects(debouncedParam);
+  useDocumentTitle("项目列表-Jira", false);
+
+  const [param, setParam] = useProjectSearchParams();
+  const { isLoading, error, data: list } = useProjects(useDebounce(param, 200));
   const { data: users } = useUsers();
 
-  useDocumentTitle("项目列表-Jira", false);
   const paramShow = useUrlQueryParam(["name", "personId"])[0];
 
   return (
