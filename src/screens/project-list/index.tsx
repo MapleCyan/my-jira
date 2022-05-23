@@ -6,7 +6,6 @@ import { useProjects } from "utils/projects";
 import { useUsers } from "utils/users";
 import { Typography } from "antd";
 import { useDocumentTitle } from "utils/index";
-import { useUrlQueryParam } from "utils/url";
 import { useProjectSearchParams } from "./util";
 
 export interface User {
@@ -22,20 +21,29 @@ export const ProjectListScreen = () => {
   useDocumentTitle("项目列表-Jira", false);
 
   const [param, setParam] = useProjectSearchParams();
-  const { isLoading, error, data: list } = useProjects(useDebounce(param, 200));
+  const {
+    isLoading,
+    error,
+    retry,
+    data: list,
+  } = useProjects(useDebounce(param, 200));
   const { data: users } = useUsers();
 
-  const paramShow = useUrlQueryParam(["name", "personId"])[0];
+  // const paramShow = useUrlQueryParam(["name", "personId"])[0];
 
   return (
     <Container>
       <h1>项目列表</h1>
-      <div>{JSON.stringify(paramShow)}</div>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type="danger">{error.message}</Typography.Text>
       ) : null}
-      <List loading={isLoading} users={users || []} dataSource={list || []} />
+      <List
+        refresh={retry}
+        loading={isLoading}
+        users={users || []}
+        dataSource={list || []}
+      />
     </Container>
   );
 };

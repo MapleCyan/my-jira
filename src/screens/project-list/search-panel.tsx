@@ -1,4 +1,4 @@
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
 import { UserSelect } from "components/user-select";
 import { User } from "./index";
 import { Project } from "./list";
@@ -29,7 +29,9 @@ export const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {
         <Form.Item>
           <UserSelect
             value={param.personId}
-            onChange={(value) => setParam({ ...param, personId: value })}
+            onChange={(value) => {
+              setParam({ ...param, personId: value });
+            }}
             defaultOptionName="负责人"
           ></UserSelect>
         </Form.Item>

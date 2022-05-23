@@ -3,6 +3,8 @@ import { User } from "./index";
 import dayjs from "dayjs";
 // react-router和react-router-dom的关系，类似于react和react-dom/react-native/react-vr的关系
 import { Link } from "react-router-dom";
+import { Pin } from "components/pin";
+import { useEditProject } from "utils/projects";
 
 //TODO: 把id改成number类型
 export interface Project {
@@ -16,15 +18,32 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
+  refresh?: () => void;
 }
 
 export const List = ({ users, ...props }: ListProps) => {
+  const { mutate } = useEditProject();
+  const pinProject = (id: number, pin: boolean) => {
+    mutate({ id, pin }).then(props?.refresh);
+  };
+
   return (
     <Table
       {...props}
       rowKey={"id"}
       pagination={false}
       columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return (
+              <Pin
+                checked={project.pin}
+                onCheckedChange={(pin) => pinProject(project.id, pin)}
+              />
+            );
+          },
+        },
         {
           title: "名称",
           key: "name",

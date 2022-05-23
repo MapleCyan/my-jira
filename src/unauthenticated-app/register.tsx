@@ -1,7 +1,7 @@
 import { useAuth } from "context/auth-context";
 import { Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app";
-import { useAsync } from "utils/useAsync";
+import { useAsync } from "utils/use-async";
 
 export const RegisterScreen = ({
   onError,
