@@ -56,11 +56,13 @@ export const useAsync = <D>(
       if (!promise || !promise.then) {
         throw new Error("请传入Promise类型的数据");
       }
+      //NOTE: 注意这里要手动指定retry函数，否则无法实现retry的功能
       setRetry(() => () => {
         if (runConfig?.retry) {
           run(runConfig.retry(), runConfig);
         }
       });
+      //NOTE: 这里如果不使用state的函数用法，而直接用state，会造成无限循环
       setState((prevState) => ({ ...prevState, stat: "loading" }));
       return promise
         .then((data) => {
@@ -84,6 +86,7 @@ export const useAsync = <D>(
     isError: state.stat === "error",
     isSuccess: state.stat === "success",
     run,
+    // NOTE: retry被调用时重新跑一遍run，让state刷新一遍
     retry,
     setData,
     setError,

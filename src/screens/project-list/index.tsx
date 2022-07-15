@@ -4,9 +4,10 @@ import { useDebounce } from "utils";
 import styled from "@emotion/styled";
 import { useProjects } from "utils/projects";
 import { useUsers } from "utils/users";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useDocumentTitle } from "utils/index";
 import { useProjectSearchParams } from "./util";
+import { Row } from "components/lib";
 
 export interface User {
   id: number;
@@ -17,7 +18,9 @@ export interface User {
   token: string;
 }
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   useDocumentTitle("项目列表-Jira", false);
 
   const [param, setParam] = useProjectSearchParams();
@@ -33,12 +36,18 @@ export const ProjectListScreen = () => {
 
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row between={true}>
+        <h1>项目列表</h1>
+        <Button onClick={() => props.setProjectModalOpen(true)}>
+          创建项目
+        </Button>
+      </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type="danger">{error.message}</Typography.Text>
       ) : null}
       <List
+        setProjectModalOpen={props.setProjectModalOpen}
         refresh={retry}
         loading={isLoading}
         users={users || []}

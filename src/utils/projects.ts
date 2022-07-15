@@ -14,6 +14,8 @@ export const useProjects = (param?: Partial<Project>) => {
       }),
     [client, param]
   );
+  // NOTE:这里传入run的第一个参数是函数运行的结果，第二个参数是fetchProjects函数，和useAsync的设计有关
+  // NOTE:fetchProjects函数运行后，获得一个promise对象，promise对象传入run，实现异步的功能
   useEffect(() => {
     run(fetchProjects(), { retry: fetchProjects });
   }, [param, run, fetchProjects]);
