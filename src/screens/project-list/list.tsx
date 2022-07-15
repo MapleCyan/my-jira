@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu, Table, TableProps } from "antd";
+import { Dropdown, Menu, Table, TableProps } from "antd";
 import { User } from "./index";
 import dayjs from "dayjs";
 // react-router和react-router-dom的关系，类似于react和react-dom/react-native/react-vr的关系
@@ -20,7 +20,7 @@ export interface Project {
 interface ListProps extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
-  setProjectModalOpen: (isOpen: boolean) => void;
+  projectButton: JSX.Element;
 }
 
 export const List = ({ users, ...props }: ListProps) => {
@@ -86,16 +86,22 @@ export const List = ({ users, ...props }: ListProps) => {
         {
           render(value, project) {
             const items = [{ label: "编辑", key: "edit", children: null }];
-            const onClick = (e: any) => {
-              switch (e?.key) {
-                case "edit":
-                  props.setProjectModalOpen(true);
-                  break;
-              }
-            };
+            // const onClick = (e: any) => {
+            //   switch (e?.key) {
+            //     case "edit":
+            //       props.setProjectModalOpen(true);
+            //       break;
+            //   }
+            // };
 
             return (
-              <Dropdown overlay={<Menu onClick={onClick} items={items}></Menu>}>
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key={"edit"}>{props.projectButton}</Menu.Item>
+                  </Menu>
+                }
+              >
                 <ButtonNoPadding type="link">...</ButtonNoPadding>
               </Dropdown>
             );
