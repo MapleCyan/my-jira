@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useState } from "react";
 import { useMountedRef } from "utils";
 
 interface State<D> {
@@ -17,48 +17,37 @@ const defaultConfig = {
   throwOnError: false,
 };
 
-const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
-  const mountedRef = useMountedRef();
-  return useCallback(
-    (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
-    [dispatch, mountedRef]
-  );
-};
-
 export const useAsync = <D>(
   initialState?: State<D>,
   initialConfig?: typeof defaultConfig
 ) => {
   const config = { ...defaultConfig, ...initialConfig };
-  const [state, dispatch] = useReducer(
-    (state: State<D>, action: Partial<State<D>>) => ({ ...state, ...action }),
-    {
-      ...defaultInitialState,
-      ...initialState,
-    }
-  );
-  const safeDispatch = useSafeDispatch(dispatch);
+  const [state, setState] = useState({
+    ...defaultInitialState,
+    ...initialState,
+  });
+  const mountedRef = useMountedRef();
   //NOTE: useState传入函数的意义是惰性初始化，所以要用useState保存函数，不能直接传入函数
   const [retry, setRetry] = useState(() => () => {});
 
   const setData = useCallback(
     (data: D) =>
-      safeDispatch({
+      setState({
         data,
         stat: "success",
         error: null,
       }),
-    [safeDispatch]
+    []
   );
 
   const setError = useCallback(
     (error: Error) =>
-      safeDispatch({
+      setState({
         data: null,
         stat: "error",
         error,
       }),
-    [safeDispatch]
+    []
   );
 
   // run 用来触发异步请求
@@ -74,10 +63,10 @@ export const useAsync = <D>(
         }
       });
       //NOTE: 这里如果不使用state的函数用法，而直接用state，会造成无限循环
-      safeDispatch({ stat: "loading" });
+      setState((prevState) => ({ ...prevState, stat: "loading" }));
       return promise
         .then((data) => {
-          setData(data);
+          if (mountedRef.current) setData(data);
           return data;
         })
         .catch((error) => {
@@ -88,7 +77,7 @@ export const useAsync = <D>(
           return error;
         });
     },
-    [config.throwOnError, safeDispatch, setData, setError]
+    [config.throwOnError, mountedRef, setData, setError]
   );
 
   return {
